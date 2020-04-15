@@ -1,0 +1,12 @@
+apiVersion: vmoperator.vmware.com/v1alpha1
+kind: VirtualMachine
+metadata:
+  name: testvm
+  namespace: demo2
+spec:
+  imageName: ob-15344507-photon-3-k8s-v1.15.5+vmware.1.66-guest.1.37
+  className: guaranteed-xsmall
+  powerState: poweredOn
+  storageClass: pacific-gold-storage-policy
+  #  networkInterfaces:
+  #- networkName: "VM Network"
