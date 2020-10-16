@@ -1,25 +1,28 @@
-apiVersion: gcm.vmware.com/v1alpha1
-kind: ManagedCluster
+apiVersion: run.tanzu.vmware.com/v1alpha1
+kind: TanzuKubernetesCluster
 metadata:
-  name: demo-workload-cluster2
-  namespace: demo2
+  name: workload-vsphere-tkg1
+  namespace: demo1
 spec:
+  distribution:
+    version: v1.17.7
   topology:
     controlPlane:
-      count: 1
-      class: guaranteed-xsmall #vmclass to be used for master
-      storageClass: pacific-gold-storage-policy
-    workers:  
-      count: 1
-      class: guaranteed-xsmall
-      storageClass: pacific-gold-storage-policy
-  distribution:
-    version: v1.15.5+vmware.1.66-guest.1.37
+      count: 1                                 #3 control plane nodes
+      class: best-effort-small                  #large size VM
+      storageClass: pacific-gold-storage-policy  #Specific storage class for control plane
+    workers:
+      count: 3                                 #5 worker nodes
+      class: best-effort-large               #extra large size VM
+      storageClass: pacific-gold-storage-policy   #Specific storage class for workers
   settings:
     network:
       cni:
         name: calico
       services:
-        cidrBlocks: ["192.51.100.0/12"]
-      pods:  
-        cidrBlocks: ["193.0.2.0/16"]
+        cidrBlocks: ["198.51.100.0/24"]        #Cannot overlap with Supervisor Cluster
+      pods:
+        cidrBlocks: ["192.0.2.0/22"]           #Cannot overlap with Supervisor Cluster
+    storage:
+      classes: ["pacific-gold-storage-policy"]
+      defaultClass: pacific-gold-storage-policy
