@@ -3,13 +3,20 @@
 1. Setup Harbor on the Sup cluster. 
 
 
-## Downloading nginx image and transporting it.
+## Downloading nginx image and transport it.
+
 `docker pull nginx`
+
 `docker save -o nginx.tar nginx:latest`
+
 `docker load -i nginx.tar`
+
 `docker login https://192.168.10.167 -u "administrator@vsphere.local" -p Passw0rd!`
+
 `docker tag nginx:latest docker 192.168.10.167/demo1/nginx:latest`
+
 `docker push 192.168.10.167/demo1/nginx:latest`
+
 
 ```
 kubectl create secret docker-registry harbor \
