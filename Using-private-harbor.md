@@ -10,6 +10,7 @@
 `docker pull nginx`
 
 `docker save -o nginx.tar nginx:latest`
+------
 
 `docker load -i nginx.tar`
 
