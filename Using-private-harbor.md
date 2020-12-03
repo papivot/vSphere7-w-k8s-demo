@@ -9,10 +9,9 @@
 
 `docker pull nginx`
 
-`docker save -o nginx.tar nginx:latest`
-------
+Optional : `docker save -o nginx.tar nginx:latest`
 
-`docker load -i nginx.tar`
+Optional : `docker load -i nginx.tar`
 
 `docker login https://192.168.10.167 -u "administrator@vsphere.local" -p Passw0rd!`
 
