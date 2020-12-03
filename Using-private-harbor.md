@@ -1,6 +1,8 @@
 # Using Local Harbor for registry
 
 1. Setup Harbor on the Sup cluster. 
+2. Download the ca.crt
+3. Modify the helper script to add the ca.crt to the nodes. 
 
 
 ## Downloading nginx image and transport it.
