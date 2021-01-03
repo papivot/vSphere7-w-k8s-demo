@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: nginx-cm
+    namespace: demonamespace1
+data:
+    guestinfo.metadata.encoding: base64
+    guestinfo.metadata: d2FpdC1vbi1uZXR3b3JrOgogIGlwdjQ6IHRydWUK
+    guestinfo.userdata.encoding: base64
+    guestinfo.userdata: I2Nsb3VkLWNvbmZpZwoKcGFja2FnZV91cGdyYWRlOiB0cnVlCnBhY2thZ2VzOgogIC0gbmdpbngKcnVuY21kOgogIC0gc3lzdGVtY3RsIHJlc3RhcnQgbmdpbngK
+---
+apiVersion: vmoperator.vmware.com/v1alpha1
+kind: VirtualMachine
+metadata:
+  name: photon-image
+  namespace: demonamespace1
+  labels:
+    my-selector: test-image
+spec:
+  className: test-class
+  imageName: focal-1
+  powerState: poweredOn
+  storageClass: pacific-gold-storage-policy
+  vmMetadata:
+    configMapName: nginx-cm
+    transport: ExtraConfig
+  networkInterfaces:
+  - networkName: "network-1"
+    networkType: vsphere-distributed
+  volumes:
+    - name: myRootDisk
+      vSphereVolume:
+        deviceKey: 2000
+        capacity:
+            ephemeral-storage: "20G"
+---
+apiVersion: vmoperator.vmware.com/v1alpha1
+kind: VirtualMachineService
+metadata:
+  name: photon-service
+  namespace: demonamespace1
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    my-selector: test-image
+  type: LoadBalancer
